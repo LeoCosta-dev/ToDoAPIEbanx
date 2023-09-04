@@ -19,6 +19,12 @@ app.listen(port, ()=>{
     console.log(`Servidor disponível em http://localhost:${port}`)
 })
 
+/**
+ * Middleware para reconhecimento do formato JSON para a aplicação
+ */
 app.use(express.json())
 
+/** 
+ * Chamada das rotas do controller
+*/
 UsuariosController.rotas(app)
