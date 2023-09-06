@@ -36,6 +36,15 @@ class UsuariosMetodos extends DatabaseMetodos{
     static deletarUsuarioPorId(id){
         this.deletarPorId(USUARIOS_TABELA, id)
     }
+
+    /**
+     * Atualiza um registro específico da tabela Usuários através de um identificador
+     * @param {string} id 
+     * @param {any} data 
+     */
+    static AtualizarUsuarioPorId(id, data){
+        this.atualizarPorId(USUARIOS_TABELA, id, data)
+    }
 }
 
 export default UsuariosMetodos;

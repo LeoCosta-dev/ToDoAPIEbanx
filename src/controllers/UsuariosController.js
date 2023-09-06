@@ -43,16 +43,39 @@ class UsuariosController{
         })
 
         /**
-         * Rota apra inserir um novo usuário
+         * Rota para inserir um novo usuário
          */
         app.post("/usuarios", (req, res)=>{
             const body = Object.values(req.body)
-            const usuarioModelado = new UsuariosModel(...body)
-            UsuariosMetodos.inserirUsuario(usuarioModelado)
-            res.status(200).json({
-                error: false,
-                message: "Usuário criado com sucesso"
-            })
+            const isValid = ValidacaoServices.validaCamposUsuario(...body)
+            if(isValid){
+                const usuarioModelado = new UsuariosModel(...body)
+                UsuariosMetodos.inserirUsuario(usuarioModelado)
+                res.status(200).json({
+                    error: false,
+                    message: "Usuário criado com sucesso"
+                })
+            }
+            res.status(400).json({error: true, message: `Campos invalidos`})
+        })
+
+        /**
+         * Rota para atualizar um registro já existente na tabela usuários
+         */
+        app.put("/usuarios/:id", (req, res)=>{
+            const id = req.params.id
+            const body = req.body
+            const exists = ValidacaoServices.validarExistencia(id)
+            const isValid = ValidacaoServices.validaCamposUsuario(body.nome, body.email, body.telefone)
+            if(exists){
+                if(isValid){
+                    const usuarioModelado = new UsuariosModel(body.nome, body.email, body.telefone)
+                    UsuariosMetodos.AtualizarUsuarioPorId(id, usuarioModelado)
+                    res.status(204).json()
+                }
+                res.status(400).json({error: true, message: `Campos invalidos`})
+            }
+            res.status(404).json({error: true, message: `Usuário não encontrado para o id ${id}`})
         })
     }
 }
