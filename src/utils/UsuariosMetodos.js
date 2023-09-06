@@ -19,6 +19,23 @@ class UsuariosMetodos extends DatabaseMetodos{
     static buscarTodosOsUsuarios(){
         return this.buscar(USUARIOS_TABELA)
     }
+
+    /**
+     * Método de busca de registros específicos na tabela Usuários através de um identificador
+     * @param {string} id 
+     * @returns {UsuariosModel}
+     */
+    static buscarUsuarioPorId(id){
+        return this.buscarPorId(USUARIOS_TABELA, id)
+    }
+
+    /**
+     * Método de deleção de registros específicos na tabela Usuários através de um identificador
+     * @param {string} id 
+     */
+    static deletarUsuarioPorId(id){
+        this.deletarPorId(USUARIOS_TABELA, id)
+    }
 }
 
 export default UsuariosMetodos;
