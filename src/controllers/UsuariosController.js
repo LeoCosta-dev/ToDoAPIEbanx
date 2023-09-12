@@ -11,8 +11,9 @@ class UsuariosController{
         /**
          * Rota para buscar todos os usuários
          */
-        app.get("/usuarios", (req, res)=>{
-            const usuarios = UsuariosMetodos.buscarTodosOsUsuarios()
+        app.get("/usuarios", async (req, res)=>{
+            const usuarios = await UsuariosMetodos.buscarTodosOsUsuarios()
+            console.log(usuarios)
             res.status(200).json(usuarios)
         })
         

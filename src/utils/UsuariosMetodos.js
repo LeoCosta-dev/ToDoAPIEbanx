@@ -1,7 +1,7 @@
 import UsuariosModel from "../models/UsuariosModel.js";
 import DatabaseMetodos from "./DatabaseMetodos.js";
 
-const USUARIOS_TABELA = "Usuarios"
+const USUARIOS_TABELA = "USUARIOS"
 
 class UsuariosMetodos extends DatabaseMetodos{
     /**
@@ -16,8 +16,8 @@ class UsuariosMetodos extends DatabaseMetodos{
      * Método que retorna todos os registros da tabela Usuários
      * @returns {Array<UsuariosModel>}
      */
-    static buscarTodosOsUsuarios(){
-        return this.buscar(USUARIOS_TABELA)
+    static async buscarTodosOsUsuarios(){
+        return await this.buscar(USUARIOS_TABELA)
     }
 
     /**

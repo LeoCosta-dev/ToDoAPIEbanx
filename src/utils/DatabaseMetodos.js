@@ -16,7 +16,18 @@ class DatabaseMetodos{
      * @returns {any}
      */
     static buscar(entidade){
-        return Database[entidade]
+        const query = `
+        SELECT * FROM ${entidade};
+        `
+        return new Promise((resolve, reject)=>{
+            Database.all(query, (error, rows)=>{
+                if(error){
+                    console.log(error)
+                } else {
+                    resolve(rows)
+                }
+            })
+        })
     }
 
     /**
