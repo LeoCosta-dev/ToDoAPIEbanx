@@ -12,6 +12,7 @@
   "type": "module",
   "dependencies": {
     "express": "^4.18.2",
+    "mongoose": "^7.5.1",
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {

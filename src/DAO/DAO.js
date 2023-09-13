@@ -1,13 +1,21 @@
 import Database from "../database/Database.js";
 
-class DatabaseMetodos{
+class DAO{
     /**
      * Método de inserção de dados
-     * @param {string} entidade 
-     * @param {*} data 
+     * @param {string} query 
+     * @param {Array<any>} data 
      */
-    static inserir(entidade, data){
-        Database[entidade].push(data)
+    static inserir(query, data){
+        return new Promise((resolve, reject)=>{
+            Database.run(query, data, (error)=>{
+                if(error){
+                    console.log(error)
+                    reject(error)
+                }
+                resolve({error:false})
+            })
+        })
     }
 
     /**
@@ -60,4 +68,4 @@ class DatabaseMetodos{
     }
 }
 
-export default DatabaseMetodos;
+export default DAO;

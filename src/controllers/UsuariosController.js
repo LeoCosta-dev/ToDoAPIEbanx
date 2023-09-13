@@ -1,6 +1,6 @@
 import UsuariosModel from "../models/UsuariosModel.js"
 import ValidacaoServices from "../services/ValidacaoServices.js"
-import UsuariosMetodos from "../utils/UsuariosMetodos.js"
+import UsuariosDAO from "../DAO/UsuariosDAO.js"
 
 class UsuariosController{
     /**
@@ -12,8 +12,7 @@ class UsuariosController{
          * Rota para buscar todos os usuários
          */
         app.get("/usuarios", async (req, res)=>{
-            const usuarios = await UsuariosMetodos.buscarTodosOsUsuarios()
-            console.log(usuarios)
+            const usuarios = await UsuariosDAO.buscarTodosOsUsuarios()
             res.status(200).json(usuarios)
         })
         
@@ -24,7 +23,7 @@ class UsuariosController{
             const id = req.params.id
             const isValid = ValidacaoServices.validarExistencia(id)
             if(isValid){
-                const resposta = UsuariosMetodos.buscarUsuarioPorId(id)
+                const resposta = UsuariosDAO.buscarUsuarioPorId(id)
                 res.status(200).json(resposta)
             }
             res.status(404).json({error: true, message: `Usuário não encontrado para o id ${id}`})
@@ -37,7 +36,7 @@ class UsuariosController{
             const id = req.params.id
             const isValid = ValidacaoServices.validarExistencia(id)
             if(isValid){
-                UsuariosMetodos.deletarUsuarioPorId(id)
+                UsuariosDAO.deletarUsuarioPorId(id)
                 res.status(200).json({error: false})
             }
             res.status(404).json({error: true, message: `Usuário não encontrado para o id ${id}`})
@@ -46,18 +45,24 @@ class UsuariosController{
         /**
          * Rota para inserir um novo usuário
          */
-        app.post("/usuarios", (req, res)=>{
+        app.post("/usuarios", async (req, res)=>{
             const body = Object.values(req.body)
             const isValid = ValidacaoServices.validaCamposUsuario(...body)
             if(isValid){
                 const usuarioModelado = new UsuariosModel(...body)
-                UsuariosMetodos.inserirUsuario(usuarioModelado)
-                res.status(200).json({
-                    error: false,
-                    message: "Usuário criado com sucesso"
-                })
+                try {
+                    await UsuariosDAO.inserirUsuario(usuarioModelado)
+                    res.status(201).json({
+                        error: false,
+                        message: "Usuário criado com sucesso"
+                    })
+                    console.log("paçoca")
+                } catch (error) {
+                    res.status(503).json({error: true, message: `Servidor indisponível no momento`})
+                }
+            } else {
+                res.status(400).json({error: true, message: `Campos invalidos`})
             }
-            res.status(400).json({error: true, message: `Campos invalidos`})
         })
 
         /**
@@ -71,7 +76,7 @@ class UsuariosController{
             if(exists){
                 if(isValid){
                     const usuarioModelado = new UsuariosModel(body.nome, body.email, body.telefone)
-                    UsuariosMetodos.AtualizarUsuarioPorId(id, usuarioModelado)
+                    UsuariosDAO.AtualizarUsuarioPorId(id, usuarioModelado)
                     res.status(204).json()
                 }
                 res.status(400).json({error: true, message: `Campos invalidos`})

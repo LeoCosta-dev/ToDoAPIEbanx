@@ -1,4 +1,4 @@
-import UsuariosMetodos from "../utils/UsuariosMetodos.js";
+import UsuariosDAO from "../DAO/UsuariosDAO.js";
 
 class ValidacaoServices{
     /**
@@ -7,7 +7,7 @@ class ValidacaoServices{
      * @returns {boolean}
      */
     static validarExistencia(id){
-        const usuario = UsuariosMetodos.buscarUsuarioPorId(id)
+        const usuario = UsuariosDAO.buscarUsuarioPorId(id)
         if(usuario){
             return true
         } else {
