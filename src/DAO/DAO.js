@@ -23,10 +23,8 @@ class DAO{
      * @param {string} entidade 
      * @returns {any}
      */
-    static buscar(entidade){
-        const query = `
-        SELECT * FROM ${entidade};
-        `
+    static buscar(query){
+
         return new Promise((resolve, reject)=>{
             Database.all(query, (error, rows)=>{
                 if(error){
@@ -44,8 +42,16 @@ class DAO{
      * @param {string} id 
      * @returns {any}
      */
-    static buscarPorId(entidade, id){
-        return Database[entidade][id]
+    static buscarPorId(query, id){
+        return new Promise((resolve, reject)=>{
+            Database.get(query, id, (error, rows)=>{
+                if(error){
+                    console.log(error)
+                } else {
+                    resolve(rows)
+                }
+            })
+        })
     }
 
     /**
@@ -53,8 +59,16 @@ class DAO{
      * @param {string} entidade 
      * @param {string} id 
      */
-    static deletarPorId(entidade, id){
-        delete Database[entidade][id]
+    static deletarPorId(query, id){
+        return new Promise((resolve, reject)=>{
+            Database.all(query, id, (error, rows)=>{
+                if(error){
+                    console.log(error)
+                } else {
+                    resolve(rows)
+                }
+            })
+        })
     }
 
     /**

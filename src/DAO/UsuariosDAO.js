@@ -1,3 +1,4 @@
+import { query } from "express";
 import UsuariosModel from "../models/UsuariosModel.js";
 import DAO from "./DAO.js";
 
@@ -22,7 +23,10 @@ class UsuariosDAO extends DAO{
      * @returns {Array<UsuariosModel>}
      */
     static async buscarTodosOsUsuarios(){
-        return await this.buscar(USUARIOS_TABELA)
+        const query = `
+        SELECT * FROM USUARIOS;
+        `
+        return await this.buscar(query)
     }
 
     /**
@@ -30,16 +34,20 @@ class UsuariosDAO extends DAO{
      * @param {string} id 
      * @returns {UsuariosModel}
      */
-    static buscarUsuarioPorId(id){
-        return this.buscarPorId(USUARIOS_TABELA, id)
+    static async buscarUsuarioPorId(id){
+        const query = `
+        SELECT * FROM USUARIOS where ID = ?;
+        `
+        return await this.buscarPorId(query, id)
     }
 
     /**
      * Método de deleção de registros específicos na tabela Usuários através de um identificador
      * @param {string} id 
      */
-    static deletarUsuarioPorId(id){
-        this.deletarPorId(USUARIOS_TABELA, id)
+    static async deletarUsuarioPorId(id){
+        const query = "DELETE FROM USUARIOS WHERE ID = ?"
+        await this.deletarPorId(query, id)
     }
 
     /**

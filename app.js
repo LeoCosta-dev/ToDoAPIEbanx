@@ -1,7 +1,11 @@
 import express from "express";
 // const express = require("express")
+import cors from "cors";
+import { config } from "dotenv";
 import UsuariosController from "./src/controllers/UsuariosController.js";
 
+
+config()
 /**
  * Instancia do express
  * (inicialização do que foi importado)
@@ -24,6 +28,7 @@ app.listen(port, ()=>{
  */
 app.use(express.json())
 
+app.use(cors('*'))
 /** 
  * Chamada das rotas do controller
 */
