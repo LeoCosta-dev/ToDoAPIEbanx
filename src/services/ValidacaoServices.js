@@ -6,12 +6,11 @@ class ValidacaoServices{
      * @param {string} id 
      * @returns {boolean}
      */
-    static validarExistencia(id){
-        const usuario = UsuariosDAO.buscarUsuarioPorId(id)
-        if(usuario){
-            return true
-        } else {
-            return false
+    static async validarExistencia(id){
+        try {
+            await UsuariosDAO.buscarUsuarioPorId(id)
+        } catch (error) {
+            throw error
         }
     }
 
@@ -52,7 +51,9 @@ class ValidacaoServices{
      */
     static validaCamposUsuario(nome, email, telefone){
         const isValid = this.validaNome(nome) && this.validaEmail(email) && this.validaTelefone(telefone)
-        return isValid
+        if(!isValid){
+            throw new Error("Campos invalidos")
+        }
     }
 }
 

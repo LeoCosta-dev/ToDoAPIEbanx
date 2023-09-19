@@ -44,10 +44,13 @@ class DAO{
      */
     static buscarPorId(query, id){
         return new Promise((resolve, reject)=>{
-            Database.get(query, id, (error, rows)=>{
+            Database.get(query, [id], (error, rows)=>{
                 if(error){
-                    console.log(error)
+                    reject(error)
                 } else {
+                    if(!rows){
+                        reject({error: true, message: "Usuário não encontrado para o id"})
+                    }
                     resolve(rows)
                 }
             })
@@ -63,7 +66,7 @@ class DAO{
         return new Promise((resolve, reject)=>{
             Database.all(query, id, (error, rows)=>{
                 if(error){
-                    console.log(error)
+                    reject(error)
                 } else {
                     resolve(rows)
                 }
@@ -77,8 +80,16 @@ class DAO{
      * @param {string} id 
      * @param {any} data 
      */
-    static atualizarPorId(entidade, id, data){
-        Database[entidade][id] = data
+    static atualizarPorId(query, id, data){
+        return new Promise((resolve, reject) => {
+            Database.run(query, [...data, id], (error, rows) => {
+                if(error){
+                    reject(error)
+                } else {
+                    resolve(rows)
+                }
+            })
+        })
     }
 }
 

@@ -1,8 +1,6 @@
-import { query } from "express";
 import UsuariosModel from "../models/UsuariosModel.js";
 import DAO from "./DAO.js";
 
-const USUARIOS_TABELA = "USUARIOS"
 
 class UsuariosDAO extends DAO{
     /**
@@ -38,7 +36,13 @@ class UsuariosDAO extends DAO{
         const query = `
         SELECT * FROM USUARIOS where ID = ?;
         `
-        return await this.buscarPorId(query, id)
+            try {
+                const response = await this.buscarPorId(query, id)
+                return response
+            } catch (error) {
+                throw error
+            }
+
     }
 
     /**
@@ -47,7 +51,12 @@ class UsuariosDAO extends DAO{
      */
     static async deletarUsuarioPorId(id){
         const query = "DELETE FROM USUARIOS WHERE ID = ?"
-        await this.deletarPorId(query, id)
+        try {
+            await this.deletarPorId(query, id)
+        } catch (error) {
+            throw error
+        }
+
     }
 
     /**
@@ -55,8 +64,14 @@ class UsuariosDAO extends DAO{
      * @param {string} id 
      * @param {any} data 
      */
-    static AtualizarUsuarioPorId(id, data){
-        this.atualizarPorId(USUARIOS_TABELA, id, data)
+    static async AtualizarUsuarioPorId(id, data){
+        const query = "UPDATE USUARIOS SET (ID, NOME, EMAIL, TELEFONE) = (?,?,?,?) WHERE ID = ?"
+        const values = Object.values(data)
+        try {            
+            await this.atualizarPorId(query, id, [id ,...values])
+        } catch (error) {
+            throw error
+        }
     }
 }
 
