@@ -29,7 +29,8 @@ class ValidacaoServices{
      * @returns {boolean}
      */
     static validaEmail(email){
-        return typeof email == "string" && email.length > 2
+        const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i
+        return regex.test(email)
     }
 
     /**

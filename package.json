@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node ./app.js",
     "dev": "nodemon ./app.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "database" : "node ./src/database/createAndPopulate.js",
+    "build" : "npm run database & npm start"
   },
   "author": "",
   "license": "MIT",
